@@ -18,40 +18,31 @@ class LoginViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        emailTextField.text = ""
-        passwordTextField.text = ""
+        emailTextField.text = "ghostgob"
+        passwordTextField.text = "aphiw3au"
     }
     
     @IBAction func loginTapped(_ sender: UIButton) {
         TMDBClient.getRequestToken(completion: requestTokenHandler(success:error:))
-        //performSegue(withIdentifier: "completeLogin", sender: nil)
     }
     
     @IBAction func loginViaWebsiteTapped() {
         TMDBClient.getRequestToken { (success, error) in
             if(success){
-                DispatchQueue.main.async {
-                    UIApplication.shared.open(TMDBClient.Endpoints.webAuth.url, options: [:], completionHandler: nil    )
-                }
+                UIApplication.shared.open(TMDBClient.Endpoints.webAuth.url, options: [:], completionHandler: nil)
             }
         }
     }
     
     func requestTokenHandler(success: Bool, error: Error?){
         print("requesttoken \(success)")
-        print(error ?? "no Error")
-        print(TMDBClient.Auth.requestToken)
         if(success){
-            DispatchQueue.main.async {
-                TMDBClient.login(un: self.emailTextField.text ?? "", pw: self.passwordTextField.text ?? "", completion: self.loginHandler(success:error:))
-            }
+            TMDBClient.login(un: self.emailTextField.text ?? "", pw: self.passwordTextField.text ?? "", completion: self.loginHandler(success:error:))
         }
     }
     
     func loginHandler(success: Bool, error: Error?){
         print("login \(success)")
-        print(error ?? "no Error")
-        print(TMDBClient.Auth.requestToken)
         if(success){
             TMDBClient.getSessionId(completion: getSessionHandler(success:error:))
         }
@@ -59,13 +50,8 @@ class LoginViewController: UIViewController {
     
     func getSessionHandler(success: Bool, error: Error?){
         print("session \(success)")
-        print(error ?? "no Error")
-        print(TMDBClient.Auth.sessionId)
         if(success){
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "completeLogin", sender: nil)
-            }
-            
+            self.performSegue(withIdentifier: "completeLogin", sender: nil)
         }
     }
 }

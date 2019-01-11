@@ -8,4 +8,12 @@
 
 import Foundation
 
-
+struct TMDBResponse: Codable {
+    let statusMessage: String
+    let statusCode: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case statusCode = "status_code"
+        case statusMessage = "status_message"
+    }
+}

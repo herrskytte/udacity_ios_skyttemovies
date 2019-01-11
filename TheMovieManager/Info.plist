@@ -19,14 +19,21 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.udacity.TheMovieManager</string>
+			<string>no.skytte.skyttemovies</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>themoviemanager</string>
+				<string>skyttemovies</string>
 			</array>
+		</dict>
+		<dict/>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

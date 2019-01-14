@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var loginViaWebsiteButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -23,13 +24,15 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginTapped(_ sender: UIButton) {
+        setLoggingIn(true)
         TMDBClient.getRequestToken(completion: requestTokenHandler(success:error:))
     }
     
     @IBAction func loginViaWebsiteTapped() {
+        setLoggingIn(true)
         TMDBClient.getRequestToken { (success, error) in
             if(success){
-                UIApplication.shared.open(TMDBClient.Endpoints.webAuth.url, options: [:], completionHandler: nil)
+                UIApplication.shared.open(TMDBClient.Endpoints.webAuth.url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
             }
         }
     }
@@ -50,8 +53,24 @@ class LoginViewController: UIViewController {
     
     func getSessionHandler(success: Bool, error: Error?){
         print("session \(success)")
+        setLoggingIn(false)
         if(success){
             self.performSegue(withIdentifier: "completeLogin", sender: nil)
         }
     }
+    
+    func setLoggingIn(_ yes: Bool){
+        if yes{
+             activityIndicator.startAnimating()
+        }
+        else{
+            activityIndicator.stopAnimating()
+        }
+       
+    }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }
